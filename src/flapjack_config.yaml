@@ -1,0 +1,180 @@
+---
+production:
+    pid_file: /var/run/flapjack/flapjack.pid
+    log_file: /var/log/flapjack/flapjack.log
+    
+    # don't daemonize for supervisor
+    daemonize: no
+    
+    logger:
+        level: INFO
+        syslog_errors: no
+    
+    redis:
+        host: 127.0.0.1
+        port: 6380
+        db: 0
+    
+    processor:
+        enabled: yes
+        queue: events
+        notifier_queue: notifications
+        archive_events: true
+        events_archive_maxage: 10800
+        new_check_scheduled_maintenance_duration: 100 years
+        
+        logger:
+            level: INFO
+            syslog_errors: no
+    
+    notifier:
+        enabled: yes
+        
+        queue: notifications
+        email_queue: email_notifications
+        sms_queue: sms_notifications
+        jabber_queue: jabber_notifications
+        pagerduty_queue: pagerduty_notifications
+        
+        notification_log_file: /var/log/flapjack/notification.log
+        default_contact_timezone: UTC
+        
+        logger:
+            level: INFO
+            syslog_errors: no
+    
+    # nagios-receiver:
+    #     fifo: "/var/cache/nagios3/event_stream.fifo"
+    #     pid_file: "/var/run/flapjack/flapjack-nagios-receiver.pid"
+    #     log_file: "/var/log/flapjack/flapjack-nagios-receiver.log"
+    
+    # nsca-receiver:
+    #     fifo: "/var/lib/nagios3/rw/nagios.cmd"
+    #     pid_file: "/var/run/flapjack/flapjack-nsca-receiver.pid"
+    #     log_file: "/var/log/flapjack/flapjack-nsca-receiver.log"
+    
+    gateways:
+        email:
+            enabled: no
+            queue: email_notifications
+            
+            logger:
+                level: INFO
+                syslog_errors: no
+            
+            smtp_config:
+                #from: "flapjack@noreply.example"
+                host: 127.0.0.1
+                # 1025 is the default port for http://mailcatcher.me
+                port: 1025
+                starttls: false
+                #auth:
+                #  type:
+                #  username:
+                #  password:
+            # location of custom alert templates
+            #templates:
+            #  rollup_subject.text: '/etc/flapjack/templates/email/rollup_subject.text.erb'
+            #  alert_subject.text: '/etc/flapjack/templates/email/alert_subject.text.erb'
+            #  rollup.text: '/etc/flapjack/templates/email/rollup.text.erb'
+            #  alert.text: '/etc/flapjack/templates/email/alert.text.erb'
+            #  rollup.html: '/etc/flapjack/templates/email/rollup.html.erb'
+            #  alert.html: '/etc/flapjack/templates/email/alert.html.erb'
+        
+        sms:
+            enabled: no
+            queue: sms_notifications
+            endpoint: 'https://www.messagenet.com.au/dotnet/Lodge.asmx/LodgeSMSMessage'
+            username: "ermahgerd"
+            password: "xxxx"
+            
+            logger:
+                level: INFO
+                syslog_errors: no
+            
+            # location of custom alert templates
+            #templates:
+            #  rollup.text: '/etc/flapjack/templates/sms/rollup.text.erb'
+            #  alert.text: '/etc/flapjack/templates/sms/alert.text.erb'
+        
+        jabber:
+            enabled: no
+            queue: jabber_notifications
+            server: "jabber.example.com"
+            port: 5222
+            jabberid: "flapjack@jabber.example.com"
+            password: "good-password"
+            alias: "flapjack"
+            rooms:
+                - "gimp@conference.jabber.example.com"
+                - "log@conference.jabber.example.com"
+            
+            logger:
+                level: INFO
+                syslog_errors: no
+            # location of custom alert templates
+            #templates:
+            #  rollup.text: '/etc/flapjack/templates/jabber/rollup.text.erb' 
+            #  alert.text: '/etc/flapjack/templates/jabber/alert.text.erb' 
+        
+        pagerduty:
+            enabled: no
+            queue: pagerduty_notifications
+            
+            logger:
+                level: INFO
+                syslog_errors: no
+            # location of custom alert templates
+            #templates:
+            #  alert.text: '/etc/flapjack/templates/pagerduty/alert.text.erb' 
+        
+        web:
+            enabled: yes
+            port: 3080
+            timeout: 300
+            access_log: "/var/log/flapjack/web_access.log"
+            api_url: "http://localhost:3081/"
+            
+            logger:
+                level: INFO
+                syslog_errors: no
+        
+        jsonapi:
+            enabled: yes
+            port: 3081
+            timeout: 300
+            access_log: "/var/log/flapjack/jsonapi_access.log"
+            base_url: "http://localhost:3081/"
+            
+            logger:
+                level: INFO
+                syslog_errors: no
+        
+        api:
+            enabled: no
+            port: 3071
+            timeout: 300
+            access_log: "/var/log/flapjack/api_access.log"
+            
+            logger:
+                level: INFO
+                syslog_errors: no
+        
+        oobetet:
+            enabled: no
+            server: "jabber.example.com"
+            port: 5222
+            jabberid: "flapjacktest@jabber.example.com"
+            password: "nuther-good-password"
+            alias: "flapjacktest"
+            watched_check: "PING"
+            watched_entity: "foo.example.com"
+            max_latency: 300
+            pagerduty_contact: "11111111111111111111111111111111"
+            rooms:
+                - "flapjacktest@conference.jabber.example.com"
+                - "gimp@conference.jabber.example.com"
+                - "log@conference.jabber.example.com"
+            logger:
+                level: INFO
+                syslog_errors: no
