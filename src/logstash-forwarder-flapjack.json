@@ -1,6 +1,6 @@
 {
     "paths": [
-        "/var/log/flapjack/flapjack.log"
+        "/var/log/flapjack/*.log"
     ],
     "type": "flapjack"
 }

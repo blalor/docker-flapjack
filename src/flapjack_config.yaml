@@ -21,7 +21,7 @@ production:
         notifier_queue: notifications
         archive_events: true
         events_archive_maxage: 10800
-        new_check_scheduled_maintenance_duration: 100 years
+        new_check_scheduled_maintenance_duration: 30 minutes
         
         logger:
             level: INFO

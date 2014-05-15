@@ -1,0 +1,9 @@
+/var/log/flapjack/*.log {
+    daily
+    rotate 5
+    copytruncate
+    delaycompress
+    compress
+    notifempty
+    missingok
+}
