@@ -18,7 +18,7 @@ mv flapjack.logrotate /etc/logrotate.d/flapjack
 chown -R flapjack:flapjack /etc/flapjack /var/{run,log,lib}/flapjack
 
 ## openssl-devel required for eventmachine to build with encryption support
-yum install -y centos-release-SCL openssl-devel gcc-c++
+yum install -y centos-release-SCL openssl-devel gcc-c++ patch
 yum install --disablerepo=* --enablerepo=scl -y ruby193-ruby-devel
 
 ## gotta be a better way
