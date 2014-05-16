@@ -9,10 +9,11 @@ useradd -g flapjack -u 600 -r flapjack
 
 mkdir -p /etc/flapjack /var/{run,log,lib}/flapjack
 
+mv launch-flapjack.sh /usr/local/bin/
 mv program-flapjack.conf /etc/supervisor.d/
 mv collectd-flapjack.conf /etc/collectd.d/flapjack.conf
 mv logstash-forwarder-flapjack.json /etc/logstash-forwarder.d/flapjack.json
-mv flapjack_config.yaml /etc/flapjack/
+mv flapjack_config.yaml.erb /etc/flapjack/
 mv flapjack.logrotate /etc/logrotate.d/flapjack
 
 chown -R flapjack:flapjack /etc/flapjack /var/{run,log,lib}/flapjack

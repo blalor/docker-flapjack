@@ -1,3 +1,4 @@
+# -*- yaml -*-
 ---
 production:
     pid_file: /var/run/flapjack/flapjack.pid
@@ -11,9 +12,9 @@ production:
         syslog_errors: no
     
     redis:
-        host: 127.0.0.1
-        port: 6380
-        db: 0
+        host: <%= ENV["DB_PORT_6379_TCP_ADDR"] %>
+        port: <%= ENV["DB_PORT_6379_TCP_PORT"] || 6379 %>
+        db: <%= ENV["REDIS_DB_NUM"] || 0 %>
     
     processor:
         enabled: yes
@@ -31,9 +32,10 @@ production:
         enabled: yes
         
         queue: notifications
-        email_queue: email_notifications
-        sms_queue: sms_notifications
-        jabber_queue: jabber_notifications
+        
+        email_queue:     email_notifications
+        sms_queue:       sms_notifications
+        jabber_queue:    jabber_notifications
         pagerduty_queue: pagerduty_notifications
         
         notification_log_file: /var/log/flapjack/notification.log
@@ -55,7 +57,7 @@ production:
     
     gateways:
         email:
-            enabled: no
+            enabled: <%= ENV["GATEWAY_EMAIL_ENABLE"] || false %>
             queue: email_notifications
             
             logger:
@@ -63,11 +65,12 @@ production:
                 syslog_errors: no
             
             smtp_config:
-                #from: "flapjack@noreply.example"
-                host: 127.0.0.1
-                # 1025 is the default port for http://mailcatcher.me
-                port: 1025
-                starttls: false
+                from: <%= ENV["MAIL_FROM"] || "flapjack@localhost.com" %>
+                host: <%= ENV["SMTP_PORT_25_TCP_ADDR"] %>
+                port: <%= ENV["SMTP_PORT_25_TCP_PORT"] || 25 %>
+
+                starttls: <%= ENV["SMTP_STARTTLS"] || false %>
+                
                 #auth:
                 #  type:
                 #  username:
@@ -82,7 +85,7 @@ production:
             #  alert.html: '/etc/flapjack/templates/email/alert.html.erb'
         
         sms:
-            enabled: no
+            enabled: <%= ENV["GATEWAY_SMS_ENABLE"] || false %>
             queue: sms_notifications
             endpoint: 'https://www.messagenet.com.au/dotnet/Lodge.asmx/LodgeSMSMessage'
             username: "ermahgerd"
@@ -98,16 +101,17 @@ production:
             #  alert.text: '/etc/flapjack/templates/sms/alert.text.erb'
         
         jabber:
-            enabled: no
+            enabled: <%= ENV["GATEWAY_JABBER_ENABLE"] || false %>
             queue: jabber_notifications
-            server: "jabber.example.com"
-            port: 5222
-            jabberid: "flapjack@jabber.example.com"
-            password: "good-password"
-            alias: "flapjack"
+            server: <%= ENV["JABBER_PORT_5222_TCP_ADDR"] %>
+            port: <%= ENV["JABBER_PORT_5222_TCP_PORT"] || 5222 %>
+            jabberid: <%= ENV["JABBER_ID"] %>
+            password: <%= ENV["JABBER_PASSWORD"] %>
+            alias: <%= ENV["JABBER_ALIAS"] %>
             rooms:
-                - "gimp@conference.jabber.example.com"
-                - "log@conference.jabber.example.com"
+                <% if not ENV["JABBER_ROOMS"].nil? then ENV["JABBER_ROOMS"].split(",").each do |room| %>
+                - <%= room %>
+                <% end ; end %>
             
             logger:
                 level: INFO
@@ -118,7 +122,7 @@ production:
             #  alert.text: '/etc/flapjack/templates/jabber/alert.text.erb' 
         
         pagerduty:
-            enabled: no
+            enabled: <%= ENV["GATEWAY_PAGERDUTY_ENABLE"] || false %>
             queue: pagerduty_notifications
             
             logger:
@@ -151,7 +155,7 @@ production:
                 syslog_errors: no
         
         api:
-            enabled: no
+            enabled: yes
             port: 3071
             timeout: 300
             access_log: "/var/log/flapjack/api_access.log"
@@ -161,7 +165,7 @@ production:
                 syslog_errors: no
         
         oobetet:
-            enabled: no
+            enabled: <%= ENV["GATEWAY_OOBETET_ENABLE"] || false %>
             server: "jabber.example.com"
             port: 5222
             jabberid: "flapjacktest@jabber.example.com"
