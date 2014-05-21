@@ -19,7 +19,7 @@ mv flapjack.logrotate /etc/logrotate.d/flapjack
 chown -R flapjack:flapjack /etc/flapjack /var/{run,log,lib}/flapjack
 
 ## openssl-devel required for eventmachine to build with encryption support
-yum install -y centos-release-SCL openssl-devel gcc-c++ patch
+yum install -y centos-release-SCL openssl-devel gcc-c++ patch collectd-curl_json
 yum install --disablerepo=* --enablerepo=scl -y ruby193-ruby-devel
 
 ## gotta be a better way
@@ -27,7 +27,7 @@ export LD_LIBRARY_PATH="$( scl enable ruby193 'echo ${LD_LIBRARY_PATH}' )"
 export PATH="$( scl enable ruby193 'echo ${PATH}' )"
 export PKG_CONFIG_PATH="$( scl enable ruby193 'echo ${PKG_CONFIG_PATH}' )"
 
-gem install --no-rdoc --no-ri flapjack
+gem install --no-rdoc --no-ri flapjack --version 0.8.12
 
 ## cleanup
 cd /
