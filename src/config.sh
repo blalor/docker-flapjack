@@ -27,7 +27,7 @@ export LD_LIBRARY_PATH="$( scl enable ruby193 'echo ${LD_LIBRARY_PATH}' )"
 export PATH="$( scl enable ruby193 'echo ${PATH}' )"
 export PKG_CONFIG_PATH="$( scl enable ruby193 'echo ${PKG_CONFIG_PATH}' )"
 
-gem install --no-rdoc --no-ri flapjack --version 0.8.12
+gem install --no-rdoc --no-ri flapjack --version 0.9.0
 
 ## cleanup
 cd /
