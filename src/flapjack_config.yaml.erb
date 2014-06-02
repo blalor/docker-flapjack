@@ -14,7 +14,7 @@ production:
     redis:
         host: <%= ENV["DB_PORT_6379_TCP_ADDR"] %>
         port: <%= ENV["DB_PORT_6379_TCP_PORT"] || 6379 %>
-        db: <%= ENV["REDIS_DB_NUM"] || 0 %>
+        db:   <%= ENV["REDIS_DB_NUM"] || 0 %>
     
     processor:
         enabled: yes
@@ -103,11 +103,11 @@ production:
         jabber:
             enabled: <%= ENV["GATEWAY_JABBER_ENABLE"] || false %>
             queue: jabber_notifications
-            server: <%= ENV["JABBER_PORT_5222_TCP_ADDR"] %>
-            port: <%= ENV["JABBER_PORT_5222_TCP_PORT"] || 5222 %>
+            server:   <%= ENV["JABBER_PORT_5222_TCP_ADDR"] %>
+            port:     <%= ENV["JABBER_PORT_5222_TCP_PORT"] || 5222 %>
             jabberid: <%= ENV["JABBER_ID"] %>
             password: <%= ENV["JABBER_PASSWORD"] %>
-            alias: <%= ENV["JABBER_ALIAS"] %>
+            alias:    <%= ENV["JABBER_ALIAS"] %>
             rooms:
                 <% if not ENV["JABBER_ROOMS"].nil? then ENV["JABBER_ROOMS"].split(",").each do |room| %>
                 - <%= room %>
@@ -137,7 +137,7 @@ production:
             port: 3080
             timeout: 300
             access_log: "/var/log/flapjack/web_access.log"
-            api_url: "http://localhost:3081/"
+            api_url: "<%= ENV["FLAPJACK_PUBLIC_URL"] || "http://127.0.0.1" %>/api"
             
             logger:
                 level: INFO
@@ -148,17 +148,7 @@ production:
             port: 3081
             timeout: 300
             access_log: "/var/log/flapjack/jsonapi_access.log"
-            base_url: "http://localhost:3081/"
-            
-            logger:
-                level: INFO
-                syslog_errors: no
-        
-        api:
-            enabled: yes
-            port: 3071
-            timeout: 300
-            access_log: "/var/log/flapjack/api_access.log"
+            base_url: "<%= ENV["FLAPJACK_PUBLIC_URL"] || "http://127.0.0.1" %>/api"
             
             logger:
                 level: INFO
